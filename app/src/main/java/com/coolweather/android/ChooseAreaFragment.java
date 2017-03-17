@@ -1,6 +1,7 @@
 package com.coolweather.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -118,6 +119,12 @@ public class ChooseAreaFragment extends Fragment {
                     // 得到选中的城市的对象
                     selectedCity = cityList.get(position);
                     queryCounties();  // 查询所有区县
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id", weatherId);
+                    startActivity(intent);
+                    getActivity().finish();  // 销毁当前活动
                 }
             }
         });
@@ -209,6 +216,8 @@ public class ChooseAreaFragment extends Fragment {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
 
+            Log.d("Code", String.valueOf(provinceCode));
+            Log.d("Code", String.valueOf(cityCode));
             String address = "http://guolin.tech/api/china/" + provinceCode +
                     "/" + cityCode;
             Log.d("Code", address);
